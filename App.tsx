@@ -2,10 +2,12 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+
 import { CartProvider } from './src/context/CartContext';
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 
 import Shopping from './src/screens/shopping/shopping';
+import ProductDetail from './src/screens/productdetail/productdetail';
 import Cart from './src/screens/cart/cart';
 import Checkout from './src/screens/checkout/checkout';
 
@@ -26,7 +28,12 @@ function AppNavigator() {
         <Stack.Screen
           name="Shopping"
           component={Shopping}
-          options={{ title: 'ExpoShop' }}
+          options={{ title: 'HobbyStock' }}
+        />
+        <Stack.Screen
+          name="ProductDetail"
+          component={ProductDetail}
+          options={{ title: 'Product Detail'}}
         />
         <Stack.Screen
           name="Cart"
