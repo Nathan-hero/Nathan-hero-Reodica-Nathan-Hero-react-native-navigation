@@ -154,18 +154,9 @@ export default function Checkout({ navigation }: any) {
 
       {/* FOOTER */}
       <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: 16,
-          backgroundColor: theme.card,
-          borderTopWidth: 1,
-          borderTopColor: theme.border,
-        }}
+        style={[styles.totalBar]}
       >
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={{ color: theme.subtext }}>Total:</Text>
           <Text style={{ color: theme.text, fontSize: 20, fontWeight: '700' }}>
             ₱{total.toLocaleString()}

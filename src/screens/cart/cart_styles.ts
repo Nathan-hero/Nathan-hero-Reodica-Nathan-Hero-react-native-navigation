@@ -18,6 +18,7 @@ export default StyleSheet.create({
 
   // List
   listContent: {
+    paddingTop: 16,
     paddingHorizontal: 20,
     paddingBottom: 20,
   },

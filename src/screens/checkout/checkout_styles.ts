@@ -83,13 +83,13 @@ export const createStyles = (theme: any) => StyleSheet.create({
   // Checkout Success
   checkoutBox: {
     flex: 1,
-    backgroundColor: 'rgba(122, 122, 122, 0.15)',
+    backgroundColor: 'rgba(35, 35, 35, 0.28)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   checkoutContainer: {
   width: '85%',
-  backgroundColor: theme.backgroundColor,
+  backgroundColor: theme.background,
   borderRadius: 16,
   padding: 24,
   alignItems: 'center',
@@ -114,5 +114,17 @@ export const createStyles = (theme: any) => StyleSheet.create({
     color: theme.text,
     fontSize: 16,
     fontWeight: '600',
+  },
+
+  // Footer
+  totalBar:{
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 16,
+    backgroundColor: theme.background,
+    borderTopWidth: 1,
+    borderTopColor: theme.border,
   },
 });

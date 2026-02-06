@@ -1,10 +1,11 @@
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { StatusBar } from 'react-native';
 
 import { CartProvider } from './src/context/CartContext';
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
+import { AntDesign } from '@expo/vector-icons';
 
 import Shopping from './src/screens/shopping/shopping';
 import ProductDetail from './src/screens/productdetail/productdetail';
@@ -13,9 +14,14 @@ import Checkout from './src/screens/checkout/checkout';
 
 const Stack = createNativeStackNavigator();
 function AppNavigator() {
-  const { theme } = useTheme();
+  const { theme, dark } = useTheme();
 
   return (
+    <>
+    <StatusBar
+        barStyle={dark ? 'light-content' : 'dark-content'}
+        backgroundColor={theme.box}
+      />
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Shopping"
@@ -28,7 +34,7 @@ function AppNavigator() {
         <Stack.Screen
           name="Shopping"
           component={Shopping}
-          options={{ title: 'HobbyStock' }}
+          options={{ title: ' HobbyStock', headerLeft: () => <AntDesign name="dribbble" size={24} color={theme.alttext} /> }}
         />
         <Stack.Screen
           name="ProductDetail"
@@ -47,6 +53,7 @@ function AppNavigator() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </>
   );
 }
 
