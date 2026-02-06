@@ -1,55 +1,59 @@
-import { View, Text, FlatList, Image, Pressable, Alert, BackHandler } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  Pressable,
+  Alert,
+  BackHandler,
+  Modal,
+} from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import { useCart } from '../../context/CartContext';
 import { useTheme } from '../../context/ThemeContext';
 import { CommonActions } from '@react-navigation/native';
-import { useEffect } from 'react';
-import styles from './checkout_styles';
+import { useEffect, useState } from 'react';
+import { createStyles } from './checkout_styles';
 
 export default function Checkout({ navigation }: any) {
   const { cart, clearCart } = useCart();
   const { theme } = useTheme();
+  const styles = createStyles(theme);
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const total = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   const handleCheckout = () => {
-    Alert.alert('Checkout Successful', '', [
-      {
-        text: 'OK',
-        onPress: () => {
-          clearCart();
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{ name: 'Shopping' }],
-            })
-          );
-        },
-      },
-    ]);
+    setShowSuccess(true);
   };
 
-  // Android Back Button Handling
+  
   useEffect(() => {
     const backAction = () => {
-      Alert.alert('Cancel Checkout?', 'Do you want to go back and cancel this checkout?', [
-        {
-          text: 'No',
-          onPress: () => null,
-          style: 'cancel',
-        },
-        {
-          text: 'Yes',
-          onPress: () => {
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [{ name: 'Shopping' }],
-              })
-            );
+      if (showSuccess) return true;
+
+      Alert.alert(
+        'Cancel Checkout?',
+        'Do you want to go back and cancel this checkout?',
+        [
+          { text: 'No', style: 'cancel' },
+          {
+            text: 'Yes',
+            onPress: () =>
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'Shopping' }],
+                })
+              ),
           },
-        },
-      ]);
-      return true; // prevent default behavior
+        ]
+      );
+      return true;
     };
 
     const backHandler = BackHandler.addEventListener(
@@ -57,8 +61,8 @@ export default function Checkout({ navigation }: any) {
       backAction
     );
 
-    return () => backHandler.remove(); // cleanup
-  }, [navigation]);
+    return () => backHandler.remove();
+  }, [navigation, showSuccess]);
 
   const renderItem = ({ item }: any) => (
     <View
@@ -67,68 +71,88 @@ export default function Checkout({ navigation }: any) {
         {
           backgroundColor: theme.card,
           borderColor: theme.border,
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginBottom: 12,
-          padding: 12,
-          borderRadius: 12,
         },
       ]}
     >
-      {/* Image */}
       <View style={[styles.imageContainer, { backgroundColor: theme.border }]}>
         {item.image ? (
           <Image source={item.image} style={styles.image} />
         ) : (
-          <Text style={[styles.imagePlaceholder, { color: theme.text }]}>🛍️</Text>
+          <Text style={styles.imagePlaceholder}>🛍️</Text>
         )}
       </View>
 
-      {/* Item Details */}
-      <View style={{ flex: 1, marginLeft: 12 }}>
-        <Text style={[styles.itemName, { color: theme.text }]} numberOfLines={2}>
+      <View style={{ flex: 1 }}>
+        <Text style={[styles.itemName, { color: theme.text }]}>
           {item.name}
         </Text>
         <Text style={[styles.itemPrice, { color: theme.primary }]}>
-          {item.quantity} × ₱{item.price.toLocaleString()} = ₱{(item.price * item.quantity).toLocaleString()}
+          {item.quantity} × ₱{item.price.toLocaleString()} = ₱
+          {(item.price * item.quantity).toLocaleString()}
         </Text>
       </View>
     </View>
   );
 
-  const renderEmptyState = () => (
-    <View style={styles.emptyContainer}>
-      <Text style={[styles.emptyTitle, { color: theme.text }]}>
-        Your cart is empty
-      </Text>
-      <Text style={[styles.emptySubtitle, { color: theme.subtext }]}>
-        Add some items before checking out.
-      </Text>
-      <Pressable
-        onPress={() => navigation.navigate('Shopping')}
-        style={({ pressed }) => [
-          styles.continueButton,
-          { backgroundColor: theme.primary, opacity: pressed ? 0.8 : 1 },
-        ]}
-      >
-        <Text style={styles.continueButtonText}>Go Shopping</Text>
-      </Pressable>
-    </View>
-  );
-
-  if (cart.length === 0) return renderEmptyState();
+  if (cart.length === 0) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={[styles.emptyTitle, { color: theme.text }]}>
+          Your cart is empty
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
+
+      {/* SUCCESS MODAL */}
+      <Modal visible={showSuccess} transparent animationType="fade">
+        <View style={styles.checkoutBox}>
+          <View style={styles.checkoutContainer}>
+            <AntDesign
+              name="check-circle"
+              size={64}
+              color={theme.primary}
+            />
+
+            <Text style={styles.checkoutText}>
+              Order Successful
+            </Text>
+
+            <Text style={styles.checkoutTextSub}>
+              Thank you for your purchase!
+            </Text>
+
+            <Pressable
+              onPress={() => {
+                setShowSuccess(false);
+                clearCart();
+                navigation.dispatch(
+                  CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: 'Shopping' }],
+                  })
+                );
+              }}
+              style={styles.continueButton}
+            >
+              <Text style={styles.continueButtonVer2}>OK</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
       <FlatList
         data={cart}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 120 }}
         showsVerticalScrollIndicator={false}
       />
 
-      {/* Total & Checkout Button */}
+      {/* FOOTER */}
       <View
         style={{
           position: 'absolute',
@@ -141,8 +165,8 @@ export default function Checkout({ navigation }: any) {
           borderTopColor: theme.border,
         }}
       >
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 }}>
-          <Text style={{ color: theme.subtext, fontSize: 16 }}>Total:</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={{ color: theme.subtext }}>Total:</Text>
           <Text style={{ color: theme.text, fontSize: 20, fontWeight: '700' }}>
             ₱{total.toLocaleString()}
           </Text>
@@ -150,18 +174,10 @@ export default function Checkout({ navigation }: any) {
 
         <Pressable
           onPress={handleCheckout}
-          style={({ pressed }) => [
-            {
-              backgroundColor: theme.primary,
-              paddingVertical: 16,
-              borderRadius: 12,
-              alignItems: 'center',
-              opacity: pressed ? 0.8 : 1,
-            },
-          ]}
+          style={[styles.footerStyle]}
         >
           <Text style={{ color: '#fff', fontSize: 18, fontWeight: '700' }}>
-            Checkout ({cart.reduce((sum, i) => sum + i.quantity, 0)} items)
+            Checkout
           </Text>
         </Pressable>
       </View>

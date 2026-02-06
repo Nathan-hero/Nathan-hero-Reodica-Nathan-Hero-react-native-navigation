@@ -1,9 +1,9 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { FooterComponent } from 'react-native-screens/lib/typescript/components/ScreenFooter';
 
 const { width } = Dimensions.get('window');
-
-export default StyleSheet.create({
-  container: {
+export const createStyles = (theme: any) => StyleSheet.create({
+    container: {
     flex: 1,
   },
 
@@ -43,6 +43,13 @@ export default StyleSheet.create({
     fontSize: 15,
     fontWeight: '700',
   },
+  footerStyle: {
+    backgroundColor: theme.primary,
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 12,
+  },
 
   // Empty state
   emptyContainer: {
@@ -69,6 +76,42 @@ export default StyleSheet.create({
   },
   continueButtonText: {
     color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+
+  // Checkout Success
+  checkoutBox: {
+    flex: 1,
+    backgroundColor: 'rgba(122, 122, 122, 0.15)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkoutContainer: {
+  width: '85%',
+  backgroundColor: theme.backgroundColor,
+  borderRadius: 16,
+  padding: 24,
+  alignItems: 'center',
+
+  borderWidth: 3,
+  borderColor: theme.primary,
+
+},
+  checkoutText: {
+    color: theme.text,
+    fontSize: 20,
+    fontWeight: '700',
+    marginTop: 12,
+  },
+  checkoutTextSub: {
+    color: theme.subtext,
+    textAlign: 'center',
+    marginTop: 8,
+    marginBottom: 20,
+  },
+  continueButtonVer2: {
+    color: theme.text,
     fontSize: 16,
     fontWeight: '600',
   },

@@ -4,13 +4,13 @@ const { width } = Dimensions.get('window');
 
 export const createStyles = (theme: any) =>
   StyleSheet.create({
-    /* Screen */
+    // Screen
     container: {
       flex: 1,
       backgroundColor: theme.background,
     },
 
-    /* Header */
+    // Header
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -43,13 +43,13 @@ export const createStyles = (theme: any) =>
       fontSize: 18,
     },
 
-    /* List */
+    // List
     listContent: {
       padding: 16,
       paddingBottom: 120,
     },
 
-    /* Product Card */
+    // Product Card
     itembox: {
       flexDirection: 'row',
       padding: 12,
@@ -65,7 +65,7 @@ export const createStyles = (theme: any) =>
       transform: [{ scale: 0.98 }],
     },
 
-    /* Image */
+    // Image
     itemImage: {
       width: width * 0.25,
       height: width * 0.25,
@@ -73,7 +73,7 @@ export const createStyles = (theme: any) =>
       backgroundColor: theme.border,
     },
 
-    /* Content */
+    // Content
     itemContent: {
       flex: 1,
       marginLeft: 12,
@@ -104,7 +104,7 @@ export const createStyles = (theme: any) =>
       marginBottom: 12,
     },
 
-    /* Add to Cart Button */
+    // Add to Cart Button
     addButton: {
       alignSelf: 'flex-start',
       backgroundColor: theme.primary,
@@ -125,7 +125,7 @@ export const createStyles = (theme: any) =>
       fontSize: 14,
     },
 
-    /* Floating Cart Button */
+    // Floating Cart Button
     cartButton: {
       position: 'absolute',
       bottom: 20,
@@ -179,8 +179,8 @@ export const createStyles = (theme: any) =>
     },
 
     searchInput: {
-      flex: 1, // fills the available horizontal space
-      backgroundColor: theme.background, // or theme.card if you want it to match the header
+      flex: 1,
+      backgroundColor: theme.background, 
       paddingVertical: 6,
       paddingHorizontal: 12,
       borderRadius: 10,
@@ -190,7 +190,4 @@ export const createStyles = (theme: any) =>
       borderColor: theme.border,
       marginRight: 12,
     },
-
-    
-
   });

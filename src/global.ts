@@ -14,7 +14,7 @@ export const darkTheme = {
   box: '#181818',
   text: '#ffffff',
   alttext: '#ffffff',
-  primary: '#4383ad',
+  primary: '#55a4d8',
   subtext: '#b0b0b0',
   border: '#333333',
   secondary: '#4e5eb1',
